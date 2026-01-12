@@ -3,17 +3,35 @@ from bank_app import transfer, calculate_interest
 
 
 def test_transfer_success():
-    from_balance, to_balance = transfer(1000, 500, 300)
-    assert from_balance == 700
-    assert to_balance == 800
+    balance_from = 1000
+    balance_to = 500
+    amount = 300
+
+    balance_from, balance_to = transfer(balance_from, balance_to, amount)
+
+    assert balance_from == 700
+    assert balance_to == 800
 
 
 def test_transfer_insufficient_balance():
+    balance_from = 200
+    balance_to = 500
+    amount = 400
+
     with pytest.raises(ValueError):
-        transfer(200, 500, 400)
+        transfer(balance_from, balance_to, amount)
 
 
 def test_transfer_then_interest():
-    from_balance, to_balance = transfer(2000, 1000, 500)
-    updated_balance = calculate_interest(to_balance, 10, 1)
-    assert round(updated_balance, 2) == 1650.00
+    balance_from = 2000
+    balance_to = 1000
+    amount = 500
+
+    balance_from, balance_to = transfer(balance_from, balance_to, amount)
+
+    rate = 10
+    years = 1
+
+    final_balance = calculate_interest(balance_to, rate, years)
+
+    assert round(final_balance, 2) == 1650.00
